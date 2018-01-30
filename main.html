@@ -1,0 +1,204 @@
+<head>
+  <body>
+
+  </body>
+</head>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CYOA</title>
+    <link rel=stylesheet href='style.css' type='text/css'>
+    </head>
+<body>
+  
+  <div class='app'>
+  </div>
+
+  <script src="./babel.min.js"></script>
+  <script type="text/babel">
+
+    // I thought that we would need to convert to canvas so we can have colorful effects and generate assets we need,
+    // however to make gifs would simply be better.
+    // then the gifs can be downloaded and circulated and better understood 
+    // while the underlying touch designer effects aren't know
+    // touch designer is such a better interface than coding with canvas
+    // we could even make them animated like cinemagraphs and gifs!!!!!!
+
+
+    // variables
+
+    // object to be constructed by writer
+    var storyCard0 = {
+      cardTitle: 'Beginning Card',
+      cardText: 'You start your journey.',
+      cardNumber: 0,
+      cardOptions:[
+        {
+          // text for option to display
+          optionText: 'Find a sword.',
+          // card it will change to when chosen
+          goToCard: 1,
+          variables: {
+            strength: 1
+          }
+        },
+        {
+          optionText: 'Fight the Dragon',
+          goToCard: 3
+        }
+      ]
+    }
+
+    var storyCard1 = {
+      cardTitle: 'Middle Card',
+      cardText: 'You find a sword.',
+      cardNumber: 1,
+      cardOptions:[
+        {
+          // text for option to display
+          optionText: 'Return to your family.',
+          // card it will change to when chosen
+          goToCard: 4,
+          variables: {
+            strength: 0
+          }
+        },
+        {
+          optionText: 'Fight the dragon.',
+          goToCard: 2
+        }
+      ]
+    }
+
+    var storyCard2 = {
+      cardTitle: 'Victorious End Card',
+      cardText: 'Congratulations! You\'ve slayed the dragon!',
+      cardNumber: 2,
+      cardOptions:[
+        {
+          // text for option to display
+          optionText: 'Return to home with your gold!',
+          // card it will change to when chosen
+          goToCard: 0,
+          variables: {
+            strength: 1
+          }
+        }
+      ]
+    }
+
+    var storyCard3 = {
+      cardTitle: 'Defeat End Card',
+      cardText: 'The dragon breathes fire and defeats you without your sword!',
+      cardNumber: 3,
+      cardOptions:[
+        {
+          // text for option to display
+          optionText: 'Restart your journey.',
+          // card it will change to when chosen
+          goToCard: 0,
+          variables: {
+            strength: 1
+          }
+        }
+      ]
+    }
+
+    var storyCard4 = {
+      cardTitle: 'Neutral Ending Card',
+      cardText: 'You return home with sword in hand. Ready to try again tomorrow.',
+      cardNumber: 4,
+      cardOptions:[
+        {
+          // text for option to display
+          optionText: 'Try again tomorrow.',
+          // card it will change to when chosen
+          goToCard: 0,
+          variables: {
+            strength: 1
+          }
+        }
+      ]
+    }
+
+
+    var storyCardsArray = [
+      storyCard0,
+      storyCard1,
+      storyCard2,
+      storyCard3,
+      storyCard4
+    ]
+
+    function cardTitleTemp(input) {
+      return `<div class='card-title'>${input.cardTitle}</div>`    
+    }
+
+    function cardTextTemp(input) {
+      return `<div class='card-text'>${input.cardText}</div>`    
+    }
+
+    function cardImage(input) {
+      return `<img class='card-image' src='./card-${input.cardNumber}.png'>`    
+    }    
+
+    function cardOptionTextTemp(input) {
+      var finalString = ''
+      var i = 0
+      for(i=0;i<input.cardOptions.length;i++){
+        finalString += `<div class='option-text card-${input.cardOptions[i].goToCard}' onclick='render(${input.cardOptions[i].goToCard})'>${input.cardOptions[i].optionText}</div>`
+      }
+      return finalString
+    }
+
+    function storyCardTemp(input) { 
+      console.log(input)
+    return `
+      <div class='card-card'>
+        <div class='card-text-container card-${input.cardNumber}'>
+          ${cardTitleTemp(input)}
+          ${cardImage(input)}
+          ${cardTextTemp(input)}
+        </div>
+        <div class='option-container'>
+          <div class='option-question'>What would you like to do?</div>
+          ${ cardOptionTextTemp(input)}
+        </div>
+      </div>
+      `
+    }
+
+   function buildApp(num) {     
+     var main = `
+        <div class='main-container'>${storyCardTemp(storyCardsArray[num])}</div>
+     `
+     return main
+   }
+
+   function render(num) {
+    document.querySelectorAll('.app')[0].innerHTML = ''
+    document.querySelectorAll('.app')[0].innerHTML = buildApp(num)
+   }
+    // render
+
+   render(0)
+
+    // function reload () {
+    //   window.location.reload(true)
+    // }
+
+    // window.addEventListener('resize', function(event){
+    //   console.log(window.innerWidth, window.innerHeight)
+    // })
+
+    // dev reload loop
+  //setTimeout(reload, 10000)
+//  console.log(window.innerWidth, window.innerHeight)
+
+</script>
+
+</body>
+</html>
